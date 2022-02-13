@@ -1,23 +1,14 @@
-apiVersion: v1 # K8S API Version
-kind: Pod  # Object Type
+apiVersion: v1
+kind: Pod  
 metadata: 
- name: liavosapp
+ name: nginx 
 spec:
- containers: # NOTE THAT BELOW HERE WE CAN ADD AS MANY CONTAINERS WE WISH TO ENCAPSULATE IN THE SAME POD
- - name: app1
-   image: supergiantkir/animals:bear
+ containers: 
+ - name: nginx 
+   image: nginx:latest
    ports: 
    - containerPort: 80
-   volumeMounts:
-   - name: app-storage
-     mountPath: /storage
- - name: app2
+ - name: springapp
    image: yanivomc/spring-music:latest
    ports: 
    - containerPort: 8080
-   volumeMounts:
-   - name: app-storage
-     mountPath: /storage
-  volumes:
-  - name: app-storage
-    hostPath: {}
