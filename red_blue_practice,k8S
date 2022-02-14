@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: poo
+  labels:
+    app: ui
+    flavour: mybear
+    myservice: mysvc
+spec:
+  replicas: 1
+  strategy:
+   type: RollingUpdate
+   rollingUpdate:
+    maxSurge: 100%
+    maxUnavailable: 25%  
+  selector:
+    matchLabels:
+      tier: frontend
+  template:
+    metadata: 
+     name: app1 
+     labels:
+       tier: frontend
+    spec:
+     containers:
+     - name: bear
+       image: supergiantkir/animals:bear
+       ports: 
+       - containerPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moose
+  labels:
+    app: ui
+    flavour: mymoose
+    myservice: mysvc
+spec:
+  replicas: 2
+  strategy:
+   type: RollingUpdate
+   rollingUpdate:
+    maxSurge: 100%
+    maxUnavailable: 25%  
+  selector:
+    matchLabels:
+      tier: frontend
+  template:
+    metadata: 
+     name: app1 
+     labels:
+       tier: frontend
+    spec:
+     containers:
+     - name: moose
+       image: supergiantkir/animals:moose
+       ports: 
+       - containerPort: 80
+---
+kind: Service
+apiVersion: apps/v1
+metadata:
+  name: mysvc
+spec:
+  selector:
+  myservice: mysvc
+  ports:
+  - name: http
+  protocol: TCP
+  port: 80
+  targetPort: 80
+  type: LoadBalancer
+
+
